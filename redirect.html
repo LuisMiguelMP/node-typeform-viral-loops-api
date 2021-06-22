@@ -1,0 +1,70 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+
+<body>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+
+<script>
+window.onload = init();
+
+
+  function init() {
+
+    function get(n) {
+    var half = location.search.split('&' + n + '=')[1];
+    if (!half) half = location.search.split('?' + n + '=')[1];
+    return half !== undefined ? decodeURIComponent(half.split('&')[0]) : null;
+
+}
+var url = "TYPEFORM_RESULTS_URL";
+
+var email = get("email");
+
+  var origin = get("origin") ?? '';
+
+  var data = {
+      "apiToken":"VIRAL_LOOPS_CAMPAIGN_API_TOKEN",
+      "params": {
+        "participants": [{
+          "email": email
+        }],
+      },
+      "filter": {
+        "limit": 50,
+        "skip": 0
+       }
+  }
+  
+
+  axios
+    .get('https://app.viral-loops.com/api/v2/participant_data', 
+       {
+        headers: {  'Content-Type': 'application/json',
+      },
+        params: data,
+      })
+    .then(res => {
+      referralCode = res.data.data[0].user.referralCode;
+
+
+window.location.href = url + "/?userCode=" + referralCode + "&autoDetect=1" + "&referralCode=" + origin;
+
+      
+    })
+    .catch(error => {
+      alert(error);
+    })
+
+    
+  }
+</script>
+</body>
+</html>
