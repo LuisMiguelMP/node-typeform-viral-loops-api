@@ -3,7 +3,7 @@ const axios = require('axios')
 exports.post = (req, res) => {
     var result = req.body;
     var email = result.form_response.answers[0].email;
-    var referralCode = result.form_response.answers[0].referralCode;
+    var referralCode = result.form_response.hidden.referral == '' ? result.form_response.hidden.usercode : result.form_response.hidden.referral;
 
     var internalId = result.event_id;
   
