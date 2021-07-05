@@ -4,7 +4,7 @@ exports.post = (req, res) => {
     var result = req.body;
     var email = result.form_response.answers[0].email;
     var referralCode = result.form_response.hidden.referral == '' ? result.form_response.hidden.usercode : result.form_response.hidden.referral;
-
+    var resultsUrl;
     var internalId = result.event_id;
   
     var data = {
@@ -41,6 +41,7 @@ exports.post = (req, res) => {
   
 exports.get = (req, res) => {
       var email = req.query.email;
+      console.log(email);
       var referralCode;
       var data = {
         "apiToken":"VIRAL_LOOPS_CAMPAIGN_API_TOKEN",
@@ -63,13 +64,15 @@ exports.get = (req, res) => {
           params: data,
         })
       .then(res => {
-        referralCode = res.data.data[0].user.referralCode;
+        referralCode = res?.data?.data[0]?.user?.referralCode;
+        resultsUrl = referralCode != null ? 'TYPEFORM_RESULTS_URL?userCode='+referralCode : 'TYPEFORM_RESULTS_URL';
       })
       .catch(error => {
         console.error(error)
-      }).then(      async () => await res.status(200).end(referralCode)
+      }).then(      async () => await res.redirect(resultsUrl)
       )
       referralCode = ''
+      resultsUrl = '';
 
       };
 
