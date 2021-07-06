@@ -69,11 +69,14 @@ exports.get = (req, res) => {
       })
       .catch(error => {
         console.error(error)
-      }).then(      async () => await res.redirect(resultsUrl)
+      }).then(      async () => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE, OPTIONS');
+        await res.redirect(resultsUrl);
+      }
       )
       referralCode = ''
       resultsUrl = '';
 
       };
-
-      
